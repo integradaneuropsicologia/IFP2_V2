@@ -446,10 +446,6 @@ input[type="range"]{
       necessidade_controle_oposicao: {
         label: "Necessidade de Controle/Oposição",
         questions: [...F.agressao, ...F.dominancia, ...F.exibicao, ...F.autonomia]
-      },
-      total_geral: {
-        label: "Total Geral",
-        questions: Array.from({length: 100}, (_, i) => i + 1)
       }
     };
 
@@ -807,42 +803,15 @@ input[type="range"]{
       }, 0);
     }
 
-    function calculateIndicatorsIFP(answersObj) {
-      const indicators = {};
-
-      Object.entries(INDICATORS_CONFIG).forEach(([key, cfg]) => {
-        const sum = sumByQuestionNumbers(answersObj, cfg.questions);
-        indicators[key] = {
-          key,
-          label: cfg.label,
-          sum,
-          answeredCount: cfg.questions.length,
-          ignoredCount: 0,
-          maxPossible: cfg.questions.length * 7,
-          minPossible: cfg.questions.length * 1,
-          percent: cfg.questions.length ? Number(((sum / (cfg.questions.length * 7)) * 100).toFixed(2)) : null,
-          questions: cfg.questions
-        };
-      });
-
-      return indicators;
-    }
-
-    function buildResultsMetaPayloadIFP(answersObj) {
-      const indicators = calculateIndicatorsIFP(answersObj);
-
-      return Object.values(indicators).map(item => ({
-        key: item.key,
-        label: item.label,
-        sum: item.sum,
-        answeredCount: item.answeredCount,
-        ignoredCount: item.ignoredCount,
-        maxPossible: item.maxPossible,
-        minPossible: item.minPossible,
-        percent: item.percent,
-        questions: item.questions
-      }));
-    }
+function buildResultsMetaPayloadIFP(answersObj) {
+  return Object.entries(INDICATORS_CONFIG).map(([key, cfg], index) => ({
+    ordem: index + 1,
+    codigo: key,
+    nome: cfg.label,
+    pontuacao: sumByQuestionNumbers(answersObj, cfg.questions),
+    questoes: cfg.questions
+  }));
+}
 
     function validateAllAnswered() {
       document.querySelectorAll(".item.invalid").forEach(el => el.classList.remove("invalid"));
