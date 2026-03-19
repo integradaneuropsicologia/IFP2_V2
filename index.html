@@ -805,11 +805,10 @@ input[type="range"]{
 
 function buildResultsMetaPayloadIFP(answersObj) {
   return Object.entries(INDICATORS_CONFIG).map(([key, cfg], index) => ({
-    ordem: index + 1,
-    codigo: key,
-    nome: cfg.label,
-    pontuacao: sumByQuestionNumbers(answersObj, cfg.questions),
-    questoes: cfg.questions
+    key: key,
+    label: cfg.label,
+    order: index + 1,
+    value: sumByQuestionNumbers(answersObj, cfg.questions)
   }));
 }
 
