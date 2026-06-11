@@ -791,18 +791,7 @@ input[type="range"]{
     }
 
     function buildResultsPerguntasRespostasIFP(answersObj) {
-      const respostas = [];
-      ITEMS.forEach((texto, idx) => {
-        const qn = String(idx + 1).padStart(2, "0");
-        const key = `q${qn}`;
-        if (!Object.prototype.hasOwnProperty.call(answersObj, key)) return;
-        respostas.push({
-          pergunta_numero: idx + 1,
-          pergunta: texto,
-          resposta: answersObj[key]
-        });
-      });
-      return respostas;
+      return [];
     }
 
     function sumByQuestionNumbers(answersObj, questionNumbers) {
